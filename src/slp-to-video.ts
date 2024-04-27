@@ -120,6 +120,7 @@ export function createSlptoVideoProcess(opts: Partial<SlpToVideoArguments> = {})
     const ffmpegFactory = new AudioVideoMergeProcessFactory({ffmpegPath, videoFile: dolphinFactory.dumpVideoFile, audioFile: dolphinFactory.dumpAudioFile, outputFile: outputFilename, stdout, stderr, startCutoffSeconds, volume, timeout: ffmpegTimeout})
 
     dolphinProcess.onExit((code) => {
+        if (code == null) code = 0;
         if (code !== 0) {
             if (!done) {
                 done = true
@@ -127,10 +128,6 @@ export function createSlptoVideoProcess(opts: Partial<SlpToVideoArguments> = {})
                 clearTimeout(timer)
             }
             return
-        }
-
-        if (killed) {
-            return // the process was killed manually and shouldn't spawn the ffmpeg process
         }
 
         ffmpegProcess = ffmpegFactory.spawnProcess()

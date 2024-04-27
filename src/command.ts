@@ -193,6 +193,9 @@ export async function run(argv : string[] = [], development = false) : Promise<v
         }
 
         onDolphinDone((exitCode) => {
+            if (exitCode == null) {
+                exitCode = 0;
+            }
             if (!args.verbose) {
                 process.stdout.write("\n")
             }
